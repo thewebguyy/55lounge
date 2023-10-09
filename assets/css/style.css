@@ -894,6 +894,20 @@ section {
   border-radius: 50px;
 }
 
+.menu-button {
+  background: #cda45e;
+  border: 0;
+  padding: 10px 35px;
+  color: #fff;
+  transition: 0.4s;
+  border-radius: 50px;
+}
+
+.menu-button:hover {
+  background: #d3af71;
+}
+
+
 .menu #menu-flters li {
   cursor: pointer;
   display: inline-block;
