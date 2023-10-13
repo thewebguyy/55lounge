@@ -1,26 +1,37 @@
 // sharedData.js
 const items = [
     {
-        image: "path/to/image1.jpg",
+        image: "assets/img/afredo.jpg",
         name: "Afredo Pasta",
-        description: "A creamy delight...",
+        description: "",
         price: 5000,
         quantity: 1,
     },
     {
         image: "path/to/image2.jpg",
         name: "Seafood Pasta",
-        description: "A luxurious blend...",
+        description: "",
         price: 6000,
         quantity: 2,
     },
     {
-        image: "path/to/image3.jpg",
-        name: "RedSauce Pasta",
-        description: "A classic dish...",
-        price: 5000,
+        image: "assets/img/",
+        name: "English Breakfast",
+        description: "",
+        price: 3000,
         quantity: 3,
     },
-];
+    {
+        image: "assets/img/",
+        name: "American Breakfast",
+        description: "",
+        price: 3000,
+        quantity: 3,
+    },
+
+    {
+        image: "assets/img/"
+    }
+      
 
 export { items };
