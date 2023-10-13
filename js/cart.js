@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <img src="${item.image}" alt="${item.name}">
                 </td>
                 <td class="product-des" data-title="Description">
-                    <p class="product-name"><a href="#">${item.name}</a></p>
+                    <p class="data-item-name"><a href="#">${item.name}</a></p>
                     <p class="product-des">${item.description}</p>
                 </td>
                 <td class="price" data-title="Price"><span>#${item.price}</span></td>
