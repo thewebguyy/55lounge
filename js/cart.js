@@ -1,25 +1,39 @@
-// cart.js
+document.addEventListener("DOMContentLoaded", function() {
+    // Select all "Add to Cart" buttons
+    const addToCartButtons = document.querySelectorAll(".menu-button.add-to-cart");
 
-// Initialize an empty cart as an array
-let cart = [];
+    // Add a click event listener to each button
+    addToCartButtons.forEach(button => {
+        button.addEventListener("click", function() {
+            const itemName = this.getAttribute("data-item-name");
+            const itemPrice = parseFloat(this.getAttribute("data-item-price"));
+            const itemQuantity = 1; // You can customize this based on your requirements
 
-// Function to add an item to the cart
-function addToCart(productName, price) {
- cart.push({ productName, price });
-}
+            // Create an object to represent the cart item
+            const cartItem = { name: itemName, price: itemPrice, quantity: itemQuantity };
 
-// Function to display the cart
-function displayCart() {
- // Get the cart element in the cart.html page
- const cartElement = document.getElementById('cart');
+            // Check if the cart already exists in localStorage
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
- // Clear the cart element
- cartElement.innerHTML = '';
+            // Check if the item is already in the cart
+            const existingItemIndex = cart.findIndex(item => item.name === itemName);
 
- // Loop through the items in the cart and display them
- for (const item of cart) {
-  const listItem = document.createElement('li');
-  listItem.textContent = `${item.productName} - $${item.price}`;
-  cartElement.appendChild(listItem);
- }
-}
+            if (existingItemIndex !== -1) {
+                // If the item is already in the cart, update the quantity
+                cart[existingItemIndex].quantity += itemQuantity;
+            } else {
+                // If the item is not in the cart, add it
+                cart.push(cartItem);
+            }
+
+            // Update the cart in localStorage
+            localStorage.setItem("cart", JSON.stringify(cart));
+
+            // Provide feedback to the user (you can customize this)
+            alert(`${itemName} added to the cart!`);
+
+            // You can optionally redirect to the cart page here if needed
+            // window.location.href = "cart.html";
+        });
+    });
+});
