@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     // Select all "Add to Cart" buttons
-    const addToCartButtons = document.querySelectorAll(".menu-button.add-to-cart");
+    const addToCartButtons = document.querySelectorAll(".menu-button");
 
     // Add a click event listener to each button
     addToCartButtons.forEach(button => {
