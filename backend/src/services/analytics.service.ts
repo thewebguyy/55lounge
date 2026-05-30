@@ -1,4 +1,5 @@
 import { prisma } from '../lib/prisma';
+import { AuditLogRepository } from '../repositories/audit-log.repository';
 
 export class AnalyticsService {
   /**
@@ -8,13 +9,11 @@ export class AnalyticsService {
    */
   static async getDashboardMetrics(userId: string, startDate?: Date, endDate?: Date) {
     // 1. Audit Log Generation (ADR-0008)
-    await prisma.auditLog.create({
-      data: {
-        userId,
-        action: 'VIEWED_ANALYTICS',
-        metadata: { startDate, endDate }
-      }
-    });
+    await AuditLogRepository.create(
+      userId,
+      'VIEWED_ANALYTICS',
+      { startDate, endDate }
+    );
 
     const dateFilter = {};
     if (startDate || endDate) {

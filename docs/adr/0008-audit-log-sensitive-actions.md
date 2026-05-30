@@ -13,3 +13,5 @@ We will implement an append-only `AuditLog` table (`id`, `userId`, `action`, `me
 **Positive:** Provides a verifiable trail of data access, deterring internal abuse and satisfying baseline compliance requirements for business data governance. It demonstrates proactive security thinking before a breach or audit occurs.
 
 **Negative:** The `AuditLog` table will grow infinitely over time, consuming database storage. This is an acceptable tradeoff for V1; future milestones can introduce a cron job to archive or rotate logs older than 90 days if storage becomes a constraint.
+
+> **Append-Only Enforcement:** The `AuditLog` table must never have `UPDATE` or `DELETE` operations performed against it by application code. This is enforced by convention in V1 — the `AuditLogRepository` exposes only a `create` method, with no `update` or `delete` methods defined. A future hardening step would enforce this at the database level via a PostgreSQL row-level security policy or trigger that rejects mutations, making the append-only guarantee structural rather than conventional.
