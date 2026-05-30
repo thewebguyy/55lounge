@@ -10,11 +10,11 @@ jest.mock('./lib/prisma', () => ({
   },
 }));
 
-describe('GET /api/v1/health', () => {
+describe('GET /health', () => {
   it('should return 200 OK when database is connected', async () => {
     (prisma.$queryRaw as jest.Mock).mockResolvedValueOnce([{ '?column?': 1 }]);
 
-    const response = await request(app).get('/api/v1/health');
+    const response = await request(app).get('/health');
 
     expect(response.status).toBe(200);
     expect(response.body).toEqual(
@@ -28,7 +28,7 @@ describe('GET /api/v1/health', () => {
   it('should return 503 Service Unavailable when database is disconnected', async () => {
     (prisma.$queryRaw as jest.Mock).mockRejectedValueOnce(new Error('Connection failed'));
 
-    const response = await request(app).get('/api/v1/health');
+    const response = await request(app).get('/health');
 
     expect(response.status).toBe(503);
     expect(response.body).toEqual(

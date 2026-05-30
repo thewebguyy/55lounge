@@ -3,25 +3,19 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  // Idempotent operator creation
   const operatorEmail = 'operator@55lounge.com';
   
-  const existingOperator = await prisma.user.findUnique({
-    where: { email: operatorEmail }
+  await prisma.user.upsert({
+    where: { email: operatorEmail },
+    update: {},
+    create: {
+      email: operatorEmail,
+      passwordHash: 'dummy_hash_for_now',
+      role: 'OPERATOR'
+    }
   });
 
-  if (!existingOperator) {
-    await prisma.user.create({
-      data: {
-        email: operatorEmail,
-        passwordHash: 'dummy_hash_for_now',
-        role: 'OPERATOR'
-      }
-    });
-    console.log('Seeded initial operator account.');
-  } else {
-    console.log('Operator account already exists. Skipping.');
-  }
+  console.log('Seeded/Verified initial operator account using upsert.');
 }
 
 main()

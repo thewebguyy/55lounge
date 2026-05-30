@@ -1,8 +1,7 @@
 import { Router } from 'express';
-import healthRoute from './health.route';
 
 const router = Router();
 
-router.use('/', healthRoute);
+// v1 routes will go here
 
 export default router;

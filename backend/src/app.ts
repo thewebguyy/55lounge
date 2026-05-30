@@ -5,6 +5,7 @@ import pinoHttp from 'pino-http';
 import { env } from './lib/env';
 import { logger } from './lib/logger';
 import routes from './routes';
+import healthRoute from './routes/health.route';
 import { errorMiddleware } from './middlewares/error.middleware';
 import { notFoundMiddleware } from './middlewares/notFound.middleware';
 import { requestIdMiddleware } from './middlewares/requestId.middleware';
@@ -37,6 +38,9 @@ export const createApp = () => {
   // Body Parsing
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
+
+  // Health Check
+  app.use('/health', healthRoute);
 
   // API Routes
   app.use('/api/v1', routes);
