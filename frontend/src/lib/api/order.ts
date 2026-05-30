@@ -13,3 +13,8 @@ export const getMyOrders = async (): Promise<ApiResponse<any[]>> => {
   const res = await apiClient('/orders/my-orders');
   return res.json();
 };
+
+export const getOrderTracking = async (id: string): Promise<ApiResponse<any>> => {
+  const res = await apiClient(`/orders/${id}`);
+  return res.json();
+};

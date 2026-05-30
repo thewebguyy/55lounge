@@ -16,5 +16,6 @@ router.use(express.json());
 
 router.post('/intent', orderController.createIntent);
 router.get('/my-orders', orderController.getMyOrders);
+router.get('/:id', orderController.getOrderTracking);
 
 export default router;

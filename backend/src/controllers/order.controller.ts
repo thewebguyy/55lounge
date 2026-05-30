@@ -57,3 +57,48 @@ export const getMyOrders = async (req: Request, res: Response, next: NextFunctio
     next(err);
   }
 };
+
+export const getOrderTracking = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    const order = await OrderService.getOrderById(id);
+    
+    // Security check: ensure the user tracking it is the one who placed it
+    if (order.userId !== req.user!.userId && req.user!.role === 'CUSTOMER') {
+      return next(new AppError('Forbidden', 403, 'FORBIDDEN'));
+    }
+
+    res.status(200).json({ success: true, data: order });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getAdminActiveOrders = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const orders = await OrderService.listActiveOrders();
+    res.status(200).json({ success: true, data: orders });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const getAdminHistoricalOrders = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const orders = await OrderService.listHistoricalOrders();
+    res.status(200).json({ success: true, data: orders });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const updateOrderStatus = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { id } = req.params;
+    const { status } = req.body;
+    const order = await OrderService.updateOrderStatus(id, status);
+    res.status(200).json({ success: true, data: order });
+  } catch (err) {
+    next(err);
+  }
+};

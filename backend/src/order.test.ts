@@ -55,4 +55,32 @@ describe('OrderService', () => {
       ).rejects.toThrow(AppError);
     });
   });
+
+  describe('updateOrderStatus', () => {
+    it('should transition CONFIRMED to PREPARING successfully', async () => {
+      (prisma.order.findUnique as jest.Mock).mockResolvedValueOnce({ id: 'order-1', status: 'CONFIRMED' });
+      (prisma.order.update as jest.Mock).mockResolvedValueOnce({ id: 'order-1', status: 'PREPARING' });
+
+      await OrderService.updateOrderStatus('order-1', 'PREPARING');
+
+      expect(prisma.order.update).toHaveBeenCalledWith({
+        where: { id: 'order-1' },
+        data: { status: 'PREPARING' },
+        include: { items: true, user: true }
+      });
+    });
+
+    it('should reject transition from COMPLETED to CANCELLED with 400 INVALID_STATE_TRANSITION', async () => {
+      (prisma.order.findUnique as jest.Mock).mockResolvedValueOnce({ id: 'order-1', status: 'COMPLETED' });
+
+      await expect(
+        OrderService.updateOrderStatus('order-1', 'CANCELLED')
+      ).rejects.toMatchObject({
+        statusCode: 400,
+        code: 'INVALID_STATE_TRANSITION'
+      });
+
+      expect(prisma.order.update).not.toHaveBeenCalled();
+    });
+  });
 });
