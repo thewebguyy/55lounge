@@ -1,0 +1,72 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-6);
+}
+
+.button {
+  padding: var(--spacing-2) var(--spacing-4);
+  background-color: var(--color-accent);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-semibold);
+  cursor: pointer;
+}
+
+.tableContainer {
+  background: var(--color-bg-base);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.th {
+  text-align: left;
+  padding: var(--spacing-4);
+  border-bottom: 1px solid var(--color-secondary);
+  color: var(--color-text-muted);
+  font-weight: var(--font-weight-medium);
+}
+
+.td {
+  padding: var(--spacing-4);
+  border-bottom: 1px solid var(--color-secondary);
+  color: var(--color-text-base);
+}
+
+.badge {
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--radius-full);
+  font-size: var(--text-xs);
+  font-weight: var(--font-weight-bold);
+}
+
+.badgeActive {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.badgeArchived {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.actionBtn {
+  background: transparent;
+  border: none;
+  color: var(--color-accent);
+  cursor: pointer;
+  font-weight: var(--font-weight-medium);
+}
+
+.deleteBtn {
+  color: var(--color-error);
+  margin-left: var(--spacing-2);
+}

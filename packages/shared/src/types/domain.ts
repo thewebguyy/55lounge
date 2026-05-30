@@ -19,3 +19,26 @@ export enum ReservationStatus {
   REJECTED = 'REJECTED',
   CANCELLED = 'CANCELLED'
 }
+
+export interface CategoryDto {
+  id: string;
+  name: string;
+  slug: string;
+  order: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MenuItemDto {
+  id: string;
+  name: string;
+  description?: string;
+  price: number;
+  imageUrl?: string;
+  isAvailable: boolean;
+  deletedAt?: string | null;
+  categoryId: string;
+  category?: CategoryDto;
+  createdAt: string;
+  updatedAt: string;
+}
