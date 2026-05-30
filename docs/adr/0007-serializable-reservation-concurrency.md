@@ -20,6 +20,8 @@ The reservation system introduces a critical concurrency challenge: overbooking.
 - **Transaction Abort Rate:** Serializable isolation leads to a higher rate of transaction aborts under extreme contention. 
 - **Error Handling:** When a serialization failure occurs, Prisma throws error code `P2034`. The service layer must explicitly catch this exact error code and convert it into a `409 Conflict` (`AppError('Fully booked', 409)`). If unhandled, it surfaces as a `500 Internal Server Error`, creating a poor UX.
 
+> **P2034 Retry Consideration:** Under extreme contention, serialization failures may occur even when capacity is available — the transaction aborts not because the slot is full, but because a concurrent write was detected. The current implementation returns `409` for both cases (full capacity and serialization conflict), which is acceptable for V1. A future improvement would distinguish between the two: `409 Fully Booked` versus `503 Service Temporarily Unavailable, please retry` for pure serialization conflicts. This distinction is documented here for future engineers.
+
 ## Alternatives Considered
 - **Optimistic Locking (`@updatedAt` / Versioning):** Rejected. While fast, it pushes the complexity of retry logic into the application layer, and is difficult to model for capacity SUMs rather than single-row updates.
 - **Pessimistic Locking (`SELECT ... FOR UPDATE`):** Rejected. It requires explicit `Table` or `TimeSlot` inventory rows in the database to lock against. By using Serializable transactions, we can lock based on the aggregate `SUM` of the reservations without needing pre-seeded inventory rows.
