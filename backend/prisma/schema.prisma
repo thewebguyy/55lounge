@@ -19,6 +19,7 @@ model User {
   role          UserRole  @default(CUSTOMER)
   refreshToken  String?
   orders        Order[]
+  reservations  Reservation[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
@@ -83,6 +84,26 @@ model OrderItem {
   nameAtPurchase  String
   priceAtPurchase Int
   quantity        Int
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+model Reservation {
+  id              String            @id @default(cuid())
+  userId          String
+  user            User              @relation(fields: [userId], references: [id])
+  reservationTime DateTime          // Fixed slot bucket
+  partySize       Int
+  status          ReservationStatus @default(CONFIRMED)
+  specialRequests String?
   
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt

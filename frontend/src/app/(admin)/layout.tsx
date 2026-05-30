@@ -24,6 +24,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className={styles.brand}>55Lounge Admin</div>
         <Link href="/admin/menu" className={styles.navLink}>Menu Management</Link>
         <Link href="/admin/orders" className={styles.navLink}>Orders</Link>
+        <Link href="/admin/reservations" className={styles.navLink}>Reservations</Link>
         <button 
           onClick={() => { clearAuth(); router.push('/login'); }} 
           className={styles.navLink} 

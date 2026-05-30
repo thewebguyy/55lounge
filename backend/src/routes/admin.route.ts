@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import * as menuController from '../controllers/menu.controller';
 import * as orderController from '../controllers/order.controller';
+import * as reservationController from '../controllers/reservation.controller';
 import { requireAuth, requireRole } from '../middlewares/auth.middleware';
 
 const router = Router();
@@ -23,5 +24,9 @@ router.post('/categories', menuController.createCategory);
 router.get('/orders/active', orderController.getAdminActiveOrders);
 router.get('/orders/history', orderController.getAdminHistoricalOrders);
 router.patch('/orders/:id/status', orderController.updateOrderStatus);
+
+// Reservations
+router.get('/reservations', reservationController.getAdminReservations);
+router.patch('/reservations/:id/status', reservationController.updateStatus);
 
 export default router;

@@ -1,0 +1,51 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.datePicker {
+  padding: var(--spacing-2);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-secondary);
+  font-size: var(--text-base);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--color-bg-base);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.th {
+  text-align: left;
+  padding: var(--spacing-4);
+  background: var(--color-bg-muted);
+  font-weight: var(--font-weight-semibold);
+  border-bottom: 2px solid var(--color-secondary);
+}
+
+.td {
+  padding: var(--spacing-4);
+  border-bottom: 1px solid var(--color-secondary);
+}
+
+.actionBtn {
+  background: transparent;
+  border: none;
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  margin-right: var(--spacing-4);
+}
+
+.btnComplete { color: #10b981; }
+.btnCancel { color: #991b1b; }
