@@ -29,6 +29,8 @@ We will implement a custom JWT-based dual-token architecture:
 - Increased complexity compared to a monolithic server-side session.
 - Token revocation requires maintaining a blocklist or rotating the refresh token and waiting for the short-lived access token to expire.
 
+> **Revocation Strategy (current):** On logout, the refresh token hash is deleted from the `User` record, immediately invalidating that session. Access tokens are not actively revoked — they expire naturally within their 15-minute window. This is an accepted tradeoff documented here so future engineers understand why a compromised access token has a maximum 15-minute blast radius.
+
 ## Alternatives Considered
 - **Server-Side Sessions (Redis/Cookie):** Considered, but rejected to maintain pure statelessness in the Express API and align with standard SPA/API patterns.
 - **Third-Party Auth (Auth0/Firebase):** Rejected because delegating this layer hides the developer's understanding of security fundamentals (hashing, JWT mechanics, cookie attributes).
