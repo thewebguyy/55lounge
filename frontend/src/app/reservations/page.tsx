@@ -32,7 +32,7 @@ export default function ReservationsPage() {
 
   const fetchHistory = async () => {
     const res = await getMyReservations();
-    if (res.success) setHistory(res.data);
+    if (res.success) setHistory(res.data || []);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

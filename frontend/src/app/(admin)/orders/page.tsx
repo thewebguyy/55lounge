@@ -16,7 +16,7 @@ export default function AdminOrdersPage() {
   const fetchOrders = async () => {
     try {
       const res = await getActiveOrders();
-      if (res.success) setOrders(res.data);
+      if (res.success) setOrders(res.data || []);
     } catch (err) {
       console.error('Failed to fetch active orders', err);
     }

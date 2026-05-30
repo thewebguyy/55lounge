@@ -1,5 +1,5 @@
 import { apiClient } from '../api-client';
-import { ApiResponse } from '@55lounge/shared';
+import { ApiResponse } from '@servia/shared';
 
 export const createReservation = async (time: string, partySize: number, specialRequests?: string): Promise<ApiResponse<any>> => {
   const res = await apiClient('/reservations', {

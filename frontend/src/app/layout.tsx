@@ -2,8 +2,8 @@ import './globals.css';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: '55Lounge | Where Beautiful Happens',
-  description: 'Your premier destination for delectable food and refreshing cocktails.',
+  title: 'Servia | Premium Restaurant Operations Platform',
+  description: 'The high-performance operations and fulfillment engine for modern hospitality.',
 };
 
 export default function RootLayout({

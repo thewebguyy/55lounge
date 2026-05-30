@@ -1,5 +1,5 @@
 import { apiClient } from '../api-client';
-import { ApiResponse } from '@55lounge/shared';
+import { ApiResponse } from '@servia/shared';
 
 export const createOrderIntent = async (items: { menuItemId: string, quantity: number }[]): Promise<ApiResponse<{ orderId: string, authorizationUrl: string, reference: string }>> => {
   const res = await apiClient('/orders/intent', {

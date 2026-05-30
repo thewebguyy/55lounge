@@ -1,5 +1,5 @@
 import { apiClient } from '../api-client';
-import { ApiResponse } from '@55lounge/shared';
+import { ApiResponse } from '@servia/shared';
 
 export const getActiveOrders = async (): Promise<ApiResponse<any[]>> => {
   const res = await apiClient('/admin/orders/active');

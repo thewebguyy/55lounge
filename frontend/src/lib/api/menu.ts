@@ -1,5 +1,5 @@
 import { apiClient } from '../api-client';
-import { ApiResponse, MenuItemDto, CategoryDto } from '@55lounge/shared';
+import { ApiResponse, MenuItemDto, CategoryDto } from '@servia/shared';
 
 export const getAdminMenu = async (): Promise<ApiResponse<MenuItemDto[]>> => {
   const res = await apiClient('/admin/menu');

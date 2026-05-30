@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { MenuItemDto } from '@55lounge/shared';
+import { MenuItemDto } from '@servia/shared';
 import { apiClient } from '@/lib/api-client';
 import { useCartStore } from '@/lib/cart';
 import CartDrawer from '@/components/CartDrawer';
@@ -33,7 +33,7 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <header className={styles.header}>
-        <div className={styles.brand}>55Lounge</div>
+        <div className={styles.brand}>Servia</div>
         <button className={styles.cartBtn} onClick={() => setIsDrawerOpen(true)}>
           Cart
           {cartCount > 0 && <span className={styles.cartBadge}>{cartCount}</span>}
@@ -44,7 +44,7 @@ export default function Home() {
         {items.map((item) => (
           <div key={item.id} className={styles.card}>
             {/* Using a standard img tag for simplicity in V1, Next/Image can be used later */}
-            <img src={item.imageUrl || 'https://via.placeholder.com/300x200?text=55Lounge'} alt={item.name} className={styles.image} />
+            <img src={item.imageUrl || 'https://via.placeholder.com/300x200?text=Servia'} alt={item.name} className={styles.image} />
             <div className={styles.content}>
               <h3 className={styles.title}>{item.name}</h3>
               <p className={styles.description}>{item.description}</p>

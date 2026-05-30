@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/auth';
 import { apiClient } from '@/lib/api-client';
 import styles from './LoginForm.module.css';
-import { LoginResponse } from '@55lounge/shared';
+import { LoginResponse } from '@servia/shared';
 
 export default function LoginForm() {
   const [email, setEmail] = useState('');

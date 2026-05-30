@@ -4,7 +4,7 @@
 **Status**: Accepted
 
 ## Context
-Primary keys are required for all database entities. For a consumer-facing platform like 55Lounge, IDs are often exposed in URLs (e.g., `/orders/[id]`, `/reservations/[id]`). We needed to decide on an ID generation strategy that balances database performance, security against enumeration, and aesthetics/usability in public URLs.
+Primary keys are required for all database entities. For a consumer-facing platform like Servia, IDs are often exposed in URLs (e.g., `/orders/[id]`, `/reservations/[id]`). We needed to decide on an ID generation strategy that balances database performance, security against enumeration, and aesthetics/usability in public URLs.
 
 ## Decision
 We will use CUIDs (Collision Resistant Unique Identifiers) for all primary keys in the database via Prisma's `cuid()` default function.

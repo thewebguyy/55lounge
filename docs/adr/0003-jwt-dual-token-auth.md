@@ -5,7 +5,7 @@
 **Related**: ADR-0002
 
 ## Context
-To secure the 55Lounge Operations Platform, we need a mechanism to authenticate users and authorize API access (RBAC for operators/admins). The platform consists of a Next.js frontend and a separate Express backend. We needed to choose an authentication architecture that balances scalability, security against XSS/CSRF, and explicit control over the session lifecycle without relying on third-party dependencies (like Auth0).
+To secure the Servia Operations Platform, we need a mechanism to authenticate users and authorize API access (RBAC for operators/admins). The platform consists of a Next.js frontend and a separate Express backend. We needed to choose an authentication architecture that balances scalability, security against XSS/CSRF, and explicit control over the session lifecycle without relying on third-party dependencies (like Auth0).
 
 ## Decision
 We will implement a custom JWT-based dual-token architecture:

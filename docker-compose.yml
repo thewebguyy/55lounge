@@ -3,11 +3,11 @@ version: '3.8'
 services:
   db:
     image: postgres:15-alpine
-    container_name: 55lounge-postgres
+    container_name: servia-postgres
     environment:
-      POSTGRES_USER: 55lounge
+      POSTGRES_USER: servia
       POSTGRES_PASSWORD: secretpassword
-      POSTGRES_DB: 55lounge_dev
+      POSTGRES_DB: servia_dev
     ports:
       - "5432:5432"
     volumes:

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { getAdminMenu, archiveMenuItem } from '@/lib/api/menu';
-import { MenuItemDto } from '@55lounge/shared';
+import { MenuItemDto } from '@servia/shared';
 import styles from './page.module.css';
 
 export default function AdminMenuPage() {

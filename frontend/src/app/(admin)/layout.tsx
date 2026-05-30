@@ -21,7 +21,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   return (
     <div className={styles.container}>
       <aside className={styles.sidebar}>
-        <div className={styles.brand}>55Lounge Admin</div>
+        <div className={styles.brand}>Servia Admin</div>
         <Link href="/admin/dashboard" className={styles.navLink}>Dashboard</Link>
         <Link href="/admin/menu" className={styles.navLink}>Menu Management</Link>
         <Link href="/admin/orders" className={styles.navLink}>Orders</Link>

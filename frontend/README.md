@@ -1,36 +1,30 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Servia Frontend UI Portal
 
-## Getting Started
+A Next.js App Router portal designed for restaurant customers (catalog, carts, checkout) and operators (real-time dashboards, analytics, and booking managers).
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Key Engineering Highlights
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 1. Dynamic Operator Dashboard
+The operator panel (`/admin/dashboard`) displays restaurant metrics in real-time without reliance on pre-calculated cache layers:
+- **Instant Aggregations**: Requests metrics from the backend API using dynamic date range filters (`TODAY`, `WEEK`, `MONTH`, `ALL`).
+- **Data Visualization**: Implements custom UI bar charts that scale dynamically relative to the highest-performing menu item, ensuring accurate visual scaling.
+- **Data Integrity**: Groups popular items based on the transaction snapshot field (`nameAtPurchase`) to ensure historical records remain correct even if items are renamed or soft-deleted.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 2. State Management & Session Hydration
+Servia manages transient states using **Zustand**:
+- **Cart Store**: Manages catalog items, quantity increments, and subtotals. It is configured with local storage persistence (`useCartStore` with `persist`) to keep cart states hydrated across browser reloads.
+- **Auth Store**: Coordinates active user profiles and JWT access tokens.
+- **Token Handling**: Relies on browser-managed secure `HttpOnly` refresh cookies for background token rotation, avoiding storage of refresh credentials in JavaScript-accessible memory space.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 3. Route Guarding & Client Security
+The React components are protected against unauthorized access:
+- **Admin Layout**: The page checks user roles (`ADMIN` or `OPERATOR`) during mount and automatically redirects unauthorized customers back to the login page or catalog view.
+- **Fetch Interceptors**: An API wrapper coordinates request header injection, automatically attaching the JWT access token and correlating tracing IDs to outgoing requests.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Local Development & Styling
+- **Styling**: Structured using Vanilla CSS Modules for maximum control, avoidance of utility bloat, and modular styling.
+- **TypeScript**: Typed interface payloads sharing structures with `@servia/shared` to enforce type safety on API responses.

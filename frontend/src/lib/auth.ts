@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { UserDto } from '@55lounge/shared';
+import { UserDto } from '@servia/shared';
 
 interface AuthState {
   user: UserDto | null;

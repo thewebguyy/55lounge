@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import { MenuItemDto } from '@55lounge/shared';
+import { MenuItemDto } from '@servia/shared';
 
 export interface CartItem {
   menuItem: MenuItemDto;
@@ -45,7 +45,7 @@ export const useCartStore = create<CartState>()(
       },
     }),
     {
-      name: '55lounge-cart',
+      name: 'servia-cart',
     }
   )
 );

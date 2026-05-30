@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  const operatorEmail = 'operator@55lounge.com';
+  const operatorEmail = 'operator@servia.app';
   
   await prisma.user.upsert({
     where: { email: operatorEmail },

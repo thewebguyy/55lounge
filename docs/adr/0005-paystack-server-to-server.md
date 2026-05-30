@@ -4,7 +4,7 @@
 **Status**: Accepted
 
 ## Context
-We need to integrate Paystack for payment processing on the 55Lounge platform. There are multiple ways to initialize a Paystack transaction, including client-side popup SDKs (Paystack Inline) and Server-to-Server intent creation. We must select the architecture that maximizes security, data integrity, and reliability.
+We need to integrate Paystack for payment processing on the Servia platform. There are multiple ways to initialize a Paystack transaction, including client-side popup SDKs (Paystack Inline) and Server-to-Server intent creation. We must select the architecture that maximizes security, data integrity, and reliability.
 
 ## Decision
 We will use a Server-to-Server payment initialization flow, avoiding client-side payment creation. 

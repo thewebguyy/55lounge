@@ -14,7 +14,7 @@ export default function AdminReservationsPage() {
 
   const fetchReservations = async () => {
     const res = await getAdminReservations(new Date(selectedDate));
-    if (res.success) setReservations(res.data);
+    if (res.success) setReservations(res.data || []);
   };
 
   const handleStatusChange = async (id: string, status: string) => {
