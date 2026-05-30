@@ -26,6 +26,8 @@ The flow is:
 **Negative:**
 - Requires more infrastructure than the simple Paystack Inline popup (requires a public webhook URL and raw body signature verification middleware).
 
+> **Webhook Failure Recovery:** If our backend is temporarily unavailable when Paystack fires the webhook, Paystack will retry on an exponential backoff schedule. Because the handler is idempotent, retries are safe. However, operators should monitor for orders stuck in `PENDING` status beyond 30 minutes as a signal that webhook delivery may have failed — this will be addressed in the Milestone 8 observability work.
+
 ## Alternatives Considered
 - **Client-Side Initialization (Paystack Inline):** Rejected because it places too much trust in the client, making it possible for a malicious actor to alter the transaction amount before initialization.
 - **Redirect URL as Source of Truth:** Rejected. Relying on the user returning to `/orders/success` to verify the transaction is fragile; users often close the tab immediately after the payment succeeds on the gateway.
