@@ -9,21 +9,66 @@ on:
 jobs:
   backend-lint-test:
     runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: 55lounge
+          POSTGRES_PASSWORD: secretpassword
+          POSTGRES_DB: 55lounge_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     defaults:
       run:
         working-directory: ./backend
+
+    env:
+      DATABASE_URL: postgresql://55lounge:secretpassword@localhost:5432/55lounge_test?schema=public
+      NODE_ENV: test
+      PORT: 5000
+      CORS_ORIGIN: http://localhost:3000
+      JWT_SECRET: changeme_to_a_random_32_char_string
+      JWT_REFRESH_SECRET: changeme_to_another_random_32_char_string
+      PAYSTACK_SECRET_KEY: sk_test_mock_key
+      FRONTEND_URL: http://localhost:3000
+
     steps:
       - uses: actions/checkout@v3
+      
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
           cache: 'npm'
           cache-dependency-path: './backend/package-lock.json'
-      - run: npm ci
-      - run: npx prisma generate
-      - run: npx tsc --noEmit
-      - run: npm run lint --if-present
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Generate Prisma Client
+        run: npx prisma generate
+        
+      - name: Run Database Migrations
+        run: npx prisma migrate deploy
+        
+      - name: TypeScript Compilation Check
+        run: npx tsc --noEmit
+        
+      - name: Lint Code
+        run: npm run lint --if-present
+        
+      - name: Build Application
+        run: npm run build
+        
+      - name: Run Tests with Coverage
+        run: npm test -- --coverage
 
   frontend-lint-test:
     runs-on: ubuntu-latest
@@ -32,12 +77,22 @@ jobs:
         working-directory: ./frontend
     steps:
       - uses: actions/checkout@v3
+      
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '20'
           cache: 'npm'
           cache-dependency-path: './frontend/package-lock.json'
-      - run: npm ci
-      - run: npm run lint
-      - run: npx tsc --noEmit
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: TypeScript Compilation Check
+        run: npx tsc --noEmit
+        
+      - name: Lint Code
+        run: npm run lint --if-present
+        
+      - name: Build Application
+        run: npm run build

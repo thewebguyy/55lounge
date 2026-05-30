@@ -1,12 +1,9 @@
-import { UserRole } from '@prisma/client';
+import { UserRole } from '../lib/generated/prisma/client';
 import bcrypt from 'bcrypt';
-import jwt from 'jwt-rs'; // using jsonwebtoken, but type is jwt
+import jwt from 'jsonwebtoken';
 import { prisma } from '../lib/prisma';
 import { env } from '../lib/env';
 import { AppError } from '../errors/AppError';
-
-// Using actual jsonwebtoken
-const jsonwebtoken = require('jsonwebtoken');
 
 interface JwtPayload {
   userId: string;
@@ -17,8 +14,8 @@ export class AuthService {
   private static generateTokens(userId: string, role: UserRole) {
     const payload: JwtPayload = { userId, role };
     
-    const accessToken = jsonwebtoken.sign(payload, env.JWT_SECRET, { expiresIn: '15m' });
-    const refreshToken = jsonwebtoken.sign({ userId }, env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
+    const accessToken = jwt.sign(payload, env.JWT_SECRET, { expiresIn: '15m' });
+    const refreshToken = jwt.sign({ userId }, env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
     
     return { accessToken, refreshToken };
   }
@@ -83,7 +80,7 @@ export class AuthService {
   static async refresh(token: string) {
     let decoded: any;
     try {
-      decoded = jsonwebtoken.verify(token, env.JWT_REFRESH_SECRET);
+      decoded = jwt.verify(token, env.JWT_REFRESH_SECRET);
     } catch (err) {
       throw new AppError('Invalid or expired refresh token', 401, 'INVALID_TOKEN');
     }

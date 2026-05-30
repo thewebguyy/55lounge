@@ -1,7 +1,7 @@
 import { prisma } from '../lib/prisma';
 import { AppError } from '../errors/AppError';
 import { env } from '../lib/env';
-import { OrderStatus } from '@prisma/client';
+import { OrderStatus, MenuItem } from '../lib/generated/prisma/client';
 
 export class OrderService {
   /**
@@ -30,7 +30,7 @@ export class OrderService {
     // 2. Calculate total and prepare order item snapshots
     let totalAmount = 0;
     const orderItemsData = cartItems.map(cartItem => {
-      const dbItem = menuItems.find(mi => mi.id === cartItem.menuItemId)!;
+      const dbItem = menuItems.find((mi: MenuItem) => mi.id === cartItem.menuItemId)!;
       totalAmount += (dbItem.price * cartItem.quantity);
 
       return {

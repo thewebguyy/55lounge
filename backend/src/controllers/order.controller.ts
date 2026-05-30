@@ -61,7 +61,7 @@ export const getMyOrders = async (req: Request, res: Response, next: NextFunctio
 export const getOrderTracking = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
-    const order = await OrderService.getOrderById(id);
+    const order = await OrderService.getOrderById(id as string);
     
     // Security check: ensure the user tracking it is the one who placed it
     if (order.userId !== req.user!.userId && req.user!.role === 'CUSTOMER') {
@@ -96,7 +96,7 @@ export const updateOrderStatus = async (req: Request, res: Response, next: NextF
   try {
     const { id } = req.params;
     const { status } = req.body;
-    const order = await OrderService.updateOrderStatus(id, status);
+    const order = await OrderService.updateOrderStatus(id as string, status);
     res.status(200).json({ success: true, data: order });
   } catch (err) {
     next(err);

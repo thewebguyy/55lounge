@@ -38,7 +38,7 @@ export const updateStatus = async (req: Request, res: Response, next: NextFuncti
   try {
     const { id } = req.params;
     const { status } = req.body;
-    const reservation = await ReservationService.updateReservationStatus(id, status);
+    const reservation = await ReservationService.updateReservationStatus(id as string, status);
     res.status(200).json({ success: true, data: reservation });
   } catch (err) {
     next(err);

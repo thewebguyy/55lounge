@@ -1,0 +1,82 @@
+name: 55Lounge CD
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - staging
+          - production
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set Environment variables
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "DEPLOY_ENV=${{ github.event.inputs.environment }}" >> $GITHUB_ENV
+            if [ "${{ github.event.inputs.environment }}" = "production" ]; then
+              echo "RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN_PRODUCTION }}" >> $GITHUB_ENV
+              echo "APP_URL=${{ secrets.FRONTEND_URL_PRODUCTION }}" >> $GITHUB_ENV
+            else
+              echo "RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN_STAGING }}" >> $GITHUB_ENV
+              echo "APP_URL=${{ secrets.FRONTEND_URL_STAGING }}" >> $GITHUB_ENV
+            fi
+          else
+            echo "DEPLOY_ENV=staging" >> $GITHUB_ENV
+            echo "RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN_STAGING }}" >> $GITHUB_ENV
+            echo "APP_URL=${{ secrets.FRONTEND_URL_STAGING }}" >> $GITHUB_ENV
+          fi
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install Railway CLI
+        run: npm i -g @railway/cli
+
+      - name: Deploy to Railway
+        run: railway up --detach
+        env:
+          RAILWAY_TOKEN: ${{ env.RAILWAY_TOKEN }}
+
+      - name: Verify Deployment Health
+        run: |
+          HEALTH_URL="${{ env.APP_URL }}/health"
+          echo "Starting health check verification for URL: $HEALTH_URL"
+          
+          MAX_ATTEMPTS=10
+          ATTEMPT=1
+          SUCCESS=false
+          
+          while [ $ATTEMPT -le $MAX_ATTEMPTS ]; do
+            echo "Attempt $ATTEMPT of $MAX_ATTEMPTS: Fetching $HEALTH_URL..."
+            STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" "$HEALTH_URL" || echo "000")
+            
+            if [ "$STATUS_CODE" = "200" ]; then
+              echo "✅ Deployment is healthy! Received HTTP 200."
+              SUCCESS=true
+              break
+            fi
+            
+            echo "⚠️ Received HTTP status code: $STATUS_CODE. Waiting 10 seconds before next check..."
+            sleep 10
+            ATTEMPT=$((ATTEMPT + 1))
+          done
+          
+          if [ "$SUCCESS" = "false" ]; then
+            echo "❌ Health check failed after $MAX_ATTEMPTS attempts."
+            exit 1
+          fi

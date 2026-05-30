@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { z } from 'zod';
 
 const envSchema = z.object({
@@ -7,7 +8,14 @@ const envSchema = z.object({
   CORS_ORIGIN: z.string().url(),
   JWT_SECRET: z.string().min(32),
   JWT_REFRESH_SECRET: z.string().min(32),
-  LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info')
+  LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('info'),
+  // M4: Paystack payment integration
+  PAYSTACK_SECRET_KEY: z.string().min(1),
+  FRONTEND_URL: z.string().url(),
+  // M6: Reservation slot capacity
+  MAX_CAPACITY_PER_SLOT: z.string().default('20'),
+  // M8: Sentry error tracking (optional — safe to omit in development)
+  SENTRY_DSN: z.string().optional()
 });
 
 const parseEnv = () => {

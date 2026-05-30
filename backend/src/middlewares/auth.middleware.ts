@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-import { UserRole } from '@prisma/client';
+import { UserRole } from '../lib/generated/prisma/client';
 import { env } from '../lib/env';
 import { AppError } from '../errors/AppError';
-const jsonwebtoken = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
+
 
 declare global {
   namespace Express {
@@ -23,7 +24,7 @@ export const requireAuth = (req: Request, res: Response, next: NextFunction) => 
 
   const token = authHeader.split(' ')[1];
   try {
-    const decoded = jsonwebtoken.verify(token, env.JWT_SECRET) as any;
+    const decoded = jwt.verify(token, env.JWT_SECRET) as any;
     req.user = { userId: decoded.userId, role: decoded.role };
     next();
   } catch (err) {

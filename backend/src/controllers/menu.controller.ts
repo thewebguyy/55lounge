@@ -34,7 +34,7 @@ export const createMenuItem = async (req: Request, res: Response, next: NextFunc
 export const updateMenuItem = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
-    const item = await MenuService.updateMenuItem(id, req.body);
+    const item = await MenuService.updateMenuItem(id as string, req.body);
     res.status(200).json({ success: true, data: item });
   } catch (err) {
     next(err);
@@ -44,7 +44,7 @@ export const updateMenuItem = async (req: Request, res: Response, next: NextFunc
 export const archiveMenuItem = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { id } = req.params;
-    const item = await MenuService.deleteMenuItem(id);
+    const item = await MenuService.deleteMenuItem(id as string);
     res.status(200).json({ success: true, data: item });
   } catch (err) {
     next(err);

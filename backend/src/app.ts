@@ -10,6 +10,7 @@ import healthRoute from './routes/health.route';
 import { errorMiddleware } from './middlewares/error.middleware';
 import { notFoundMiddleware } from './middlewares/notFound.middleware';
 import { requestIdMiddleware } from './middlewares/requestId.middleware';
+import { globalLimiter, authLimiter } from './middlewares/rate-limit.middleware';
 
 export const createApp = () => {
   const app = express();
@@ -49,6 +50,10 @@ export const createApp = () => {
 
   // Health Check
   app.use('/health', healthRoute);
+
+  // Rate Limiting
+  app.use('/api/v1', globalLimiter);
+  app.use('/api/v1/auth', authLimiter);
 
   // API Routes
   app.use('/api/v1', routes);

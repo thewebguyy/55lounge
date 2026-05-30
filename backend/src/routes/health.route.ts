@@ -4,7 +4,7 @@ import { env } from '../lib/env';
 
 const router = Router();
 
-router.get('/health', async (req, res) => {
+router.get('/', async (req, res) => {
   let dbStatus = 'disconnected';
   try {
     await prisma.$queryRaw`SELECT 1`;

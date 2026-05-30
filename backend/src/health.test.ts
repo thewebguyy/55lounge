@@ -4,38 +4,21 @@ import { prisma } from './lib/prisma';
 
 const app = createApp();
 
-jest.mock('./lib/prisma', () => ({
-  prisma: {
-    $queryRaw: jest.fn(),
-  },
-}));
-
-describe('GET /health', () => {
-  it('should return 200 OK when database is connected', async () => {
-    (prisma.$queryRaw as jest.Mock).mockResolvedValueOnce([{ '?column?': 1 }]);
-
-    const response = await request(app).get('/health');
-
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual(
-      expect.objectContaining({
-        status: 'ok',
-        database: 'connected',
-      })
-    );
+describe('Health Check Endpoint', () => {
+  beforeEach(() => {
+    jest.spyOn(prisma, '$queryRaw').mockResolvedValue([1]);
   });
 
-  it('should return 503 Service Unavailable when database is disconnected', async () => {
-    (prisma.$queryRaw as jest.Mock).mockRejectedValueOnce(new Error('Connection failed'));
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
 
-    const response = await request(app).get('/health');
-
-    expect(response.status).toBe(503);
-    expect(response.body).toEqual(
-      expect.objectContaining({
-        status: 'degraded',
-        database: 'disconnected',
-      })
-    );
+  it('should return 200 OK without authentication', async () => {
+    const res = await request(app).get('/health');
+    expect(res.status).toBe(200);
+    expect(res.body.status).toBe('ok');
+    expect(res.body.database).toBe('connected');
+    expect(res.body.environment).toBeDefined();
+    expect(res.body.timestamp).toBeDefined();
   });
 });

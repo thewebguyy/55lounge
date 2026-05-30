@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { AppError } from '../errors/AppError';
+import * as Sentry from '@sentry/node';
 import { logger } from '../lib/logger';
 
 export const errorMiddleware = (
@@ -11,10 +12,13 @@ export const errorMiddleware = (
   const isOperational = err instanceof AppError ? err.isOperational : false;
   
   if (!isOperational) {
-    // Log unexpected infrastructure errors as 'error'
+    // Unexpected infrastructure error — send to Sentry and log at error level.
+    // isOperational === false means this is NOT a controlled AppError;
+    // it is an unhandled exception that warrants an alert.
+    Sentry.captureException(err);
     logger.error({ err, reqId: req.id }, 'Unexpected Infrastructure Error');
   } else {
-    // Log expected operational errors as 'warn'
+    // Controlled operational error (4xx). Do NOT send to Sentry.
     logger.warn({ err: err.message, code: (err as AppError).code, reqId: req.id }, 'Operational Error');
   }
 
@@ -23,6 +27,7 @@ export const errorMiddleware = (
   const message = isOperational ? err.message : 'Internal Server Error';
 
   res.status(statusCode).json({
+    success: false,
     error: {
       code,
       message,
