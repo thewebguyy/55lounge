@@ -19,6 +19,8 @@ We will implement soft deletes using a nullable `deletedAt` timestamp (`DateTime
 **Negative:**
 - Every public query against the table must explicitly include `where: { deletedAt: null }` to prevent deleted items from leaking into the customer UI. (Prisma does not have global default scopes, so this requires developer discipline).
 
+> **Mitigation:** A Prisma middleware (query extension) will be evaluated in a future milestone to enforce the `deletedAt: null` filter globally on `findMany` and `findFirst` operations for `MenuItem`, reducing the surface area for developer error.
+
 ## Alternatives Considered
 - **Hard Delete (`DELETE FROM`):** Rejected because it corrupts historical financial and order records.
 - **Boolean Flag (`isArchived: Boolean`):** Rejected because it provides the signal but loses the "when". In an operations platform, knowing *when* a menu item was pulled is critical for auditing disputes or tracking seasonal availability.
