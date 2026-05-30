@@ -23,6 +23,8 @@ We will implement **Short Polling** for V1, utilizing a 15-second `setInterval` 
 **Revisiting Criteria:**
 This decision will be revisited, and WebSockets/SSE will be evaluated, when concurrent active orders exceed 100, or operator feedback indicates that a 15-second latency is unacceptable for kitchen operations.
 
+> **Implementation Note:** The polling `setInterval` must be cleared on component unmount to prevent memory leaks and ghost requests from unmounted React components. This is enforced via the `useEffect` cleanup function on both the operator dashboard and customer tracking page.
+
 ## Edge Case: Cancelled Orders
 As part of the fulfillment lifecycle (`PENDING` → `CONFIRMED` → `PREPARING` → `READY` → `COMPLETED`), operators can cancel orders. 
 If an order is cancelled while in `PENDING` state (e.g., fraudulent behavior detected before payment settles), we must ensure that a delayed Paystack Webhook does not accidentally resurrect it. The webhook idempotency handler explicitly guards against overriding a `CANCELLED` status. Furthermore, an order that reaches `COMPLETED` cannot be rolled back to `CANCELLED`.
