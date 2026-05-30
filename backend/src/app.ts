@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import cookieParser from 'cookie-parser';
 import pinoHttp from 'pino-http';
 import { env } from './lib/env';
 import { logger } from './lib/logger';
@@ -35,9 +36,10 @@ export const createApp = () => {
     credentials: true
   }));
 
-  // Body Parsing
+  // Body & Cookie Parsing
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
+  app.use(cookieParser());
 
   // Health Check
   app.use('/health', healthRoute);

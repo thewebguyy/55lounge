@@ -39,3 +39,6 @@ npx prisma db seed
 # Starts both frontend and backend
 npm run dev
 ```
+
+## Future Enhancements
+- **Email Verification**: During registration, send a verification code to validate customer email addresses before allowing order placement.
