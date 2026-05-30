@@ -2,6 +2,7 @@ import { Router } from 'express';
 import * as menuController from '../controllers/menu.controller';
 import * as orderController from '../controllers/order.controller';
 import * as reservationController from '../controllers/reservation.controller';
+import * as analyticsController from '../controllers/analytics.controller';
 import { requireAuth, requireRole } from '../middlewares/auth.middleware';
 
 const router = Router();
@@ -28,5 +29,8 @@ router.patch('/orders/:id/status', orderController.updateOrderStatus);
 // Reservations
 router.get('/reservations', reservationController.getAdminReservations);
 router.patch('/reservations/:id/status', reservationController.updateStatus);
+
+// Analytics
+router.get('/analytics', analyticsController.getDashboardAnalytics);
 
 export default router;
