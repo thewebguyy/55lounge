@@ -43,3 +43,4 @@ npm run dev
 ## Future Enhancements
 - **Email Verification**: During registration, send a verification code to validate customer email addresses before allowing order placement.
 - **Image Storage**: Migrate menu item `imageUrl` strings to use direct multipart uploads via Cloudinary or AWS S3 with pre-signed URLs.
+- **Guest Checkout**: Currently V1 requires user login for order attribution, spam reduction, and operator simplicity. Guest checkout can be enabled later for frictionless ordering.

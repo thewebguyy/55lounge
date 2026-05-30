@@ -37,7 +37,13 @@ export const createApp = () => {
   }));
 
   // Body & Cookie Parsing
-  app.use(express.json());
+  app.use((req, res, next) => {
+    if (req.originalUrl.startsWith('/api/v1/orders/webhook')) {
+      next(); // skip json parsing for webhook
+    } else {
+      express.json()(req, res, next);
+    }
+  });
   app.use(express.urlencoded({ extended: true }));
   app.use(cookieParser());
 

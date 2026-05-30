@@ -18,6 +18,7 @@ model User {
   passwordHash  String
   role          UserRole  @default(CUSTOMER)
   refreshToken  String?
+  orders        Order[]
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 }
@@ -46,4 +47,43 @@ model MenuItem {
   
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
+  
+  orderItems  OrderItem[]
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PREPARING
+  READY
+  COMPLETED
+  CANCELLED
+}
+
+model Order {
+  id                String      @id @default(cuid())
+  userId            String
+  user              User        @relation(fields: [userId], references: [id])
+  status            OrderStatus @default(PENDING)
+  totalAmount       Int         // Stored in minor units (Kobo)
+  paystackReference String?     @unique
+  items             OrderItem[]
+  createdAt         DateTime    @default(now())
+  updatedAt         DateTime    @updatedAt
+}
+
+model OrderItem {
+  id              String   @id @default(cuid())
+  orderId         String
+  order           Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  menuItemId      String
+  menuItem        MenuItem @relation(fields: [menuItemId], references: [id])
+  
+  // Snapshots explicitly separated from relation to preserve history
+  nameAtPurchase  String
+  priceAtPurchase Int
+  quantity        Int
+  
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 }
